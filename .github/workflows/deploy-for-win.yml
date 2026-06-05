@@ -52,7 +52,7 @@ jobs:
     needs: its
     uses: ./.github/workflows/deploy.yml
     with:
-      repository : test
+      repository : nakigao-maven-repository
       uploaded-id: maven-artifacts-${{ github.run_id  }}
     secrets:
       APP_ID: ${{ secrets.APP_ID }}
