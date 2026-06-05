@@ -1,0 +1,59 @@
+name: Deploy For Windows
+on:
+  workflow_dispatch:
+  push:
+    tags: [ v* ]
+
+jobs:
+  # 結合テストを行う
+  its:
+    name: Run Integrated Test
+    runs-on: windows-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: setup-jdk
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+          cache: maven  # 依存関係をキャッシュ
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.9.9
+
+      - name: run-its
+        shell: bash
+        run: mvn -B deploy -DaltDeploymentRepository=local::file:"${GITHUB_WORKSPACE}/target/deploy-repo" -Prun-its-win
+
+      - name: Collect artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$GITHUB_WORKSPACE/target/deploy-repo/."
+          DST="$GITHUB_WORKSPACE/work-upload/"
+          mkdir -p "$DST"
+          cp -r "$SRC" "$DST"
+
+      - name: Upload built artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-artifacts-${{ github.run_id  }}
+          path: work-upload
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy Artifacts
+    needs: its
+    uses: ./.github/workflows/deploy.yml
+    with:
+      repository : test
+      uploaded-id: maven-artifacts-${{ github.run_id  }}
+    secrets:
+      APP_ID: ${{ secrets.APP_ID }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
