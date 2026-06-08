@@ -6,7 +6,7 @@
   <parent>
     <groupId>tpanda.maven.plugins</groupId>
     <artifactId>tpanda-gcc-plugin-project</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -16,7 +16,7 @@
   <name>tpanda-gcc-plugin セットアップ用の親POM</name>
 
   <properties>
-    <gcc.plugin.version>${project.version}</gcc.plugin.version>
+    <gcc.plugin.version>${project.parent.version}</gcc.plugin.version>
   </properties>
 
   <dependencies>
