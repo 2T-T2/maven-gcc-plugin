@@ -243,7 +243,10 @@ public abstract class AbstractPackageLinkMojo extends AbstractMojo implements Co
     }
 
     protected final String getArtifactFileBaseName() {
-        return artifact.getArtifactId();
+        return getClassifier()
+            .map(it ->"%s-%s".formatted(artifact.getArtifactId(), it))  // artifactId-classifier
+            .orElse(artifact.getArtifactId())                                 // artifactId
+        ;
     }
 
     private boolean isObjectFile(Path path) {
