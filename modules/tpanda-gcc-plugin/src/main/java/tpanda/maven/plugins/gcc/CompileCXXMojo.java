@@ -20,7 +20,7 @@ public class CompileCXXMojo extends AbstractCompileMojo implements Constructs {
      * 使用するコンパイラを指定します。
      */
     @Parameter(defaultValue = "g++")
-    private String compiler;
+    private String cxx;
     /**
      * コンパイラに渡す引数を指定します。
      */
@@ -34,7 +34,7 @@ public class CompileCXXMojo extends AbstractCompileMojo implements Constructs {
 
     @Override
     protected String getCompiler() {
-        return compiler;
+        return cxx;
     }
 
     @Override
