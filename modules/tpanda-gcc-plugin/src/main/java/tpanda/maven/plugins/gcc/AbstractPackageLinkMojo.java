@@ -69,7 +69,22 @@ public abstract class AbstractPackageLinkMojo extends AbstractMojo implements Co
      */
     @Parameter()
     protected String classifier;
+    /**
+     * c++ 標準ライブラリもリンクする場合に <code>true</code> を指定します。
+     */
+    @Parameter(defaultValue = "true")
+    protected boolean useCxxLib;
 
+    /**
+     * c++ 標準ライブラリもリンクする時に使用するコマンド
+     */
+    @Parameter(defaultValue = "g++")
+    protected String cxx;
+    /**
+     * c++ 標準ライブラリは除いてリンクする時に使用するコマンド
+     */
+    @Parameter(defaultValue = "gcc")
+    protected String cc;
     /**
      * コンパイラに渡す引数を指定します。
      */
@@ -181,7 +196,7 @@ public abstract class AbstractPackageLinkMojo extends AbstractMojo implements Co
             }
 
             // リンク実行コマンドの構築
-            Command.Builder builder = new Command.Builder("g++")
+            Command.Builder builder = new Command.Builder(useCxxLib ? cxx : cc)
                 .addArgs(cxxflags)
                 .addArgs(cppflags)
                 .addArgs(targetArch)
