@@ -5,7 +5,7 @@
 
   <groupId>tpanda.maven.plugins</groupId>
   <artifactId>tpanda-gcc-plugin-project</artifactId>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
   <packaging>pom</packaging>
 
   <name>tpanda-gcc-plugin のプロジェクトPOM</name>
